@@ -46,7 +46,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(63))
     description = db.Column(db.Text, nullable=True)
-    price = db.Column(db.Float)
+    price = db.Column(db.Float, nullable=False)
     available = db.Column(db.Boolean(), nullable=False, default=True)
     image_url = db.Column(db.Text, nullable=True)
     category = db.Column(db.Enum(Category), nullable=True)
