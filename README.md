@@ -57,7 +57,7 @@ tests/              - test cases package
 
 ## Database Structure
 
-| Field Nmae | Type | Nullable | Remark |
+| Field Name | Type | Nullable | Remark |
 | :---------- | :----------- | :-----------: |:----------- |
 | id | *Integer* | No | |
 | name | *String* | No | |

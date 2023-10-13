@@ -185,3 +185,17 @@ class Product(db.Model):
         """
         logger.info("Processing available query for %s ...", available)
         return cls.query.filter(cls.available == available)
+
+    @classmethod
+    def find_by_category(cls, category: Category) -> list:
+        """Returns all of the Pets in a category
+
+        :param category: the category of the Pets you want to match
+        :type category: Category Enum
+
+        :return: a collection of Pets in that category
+        :rtype: list
+
+        """
+        logger.info("Processing category query for %s ...", category)
+        return cls.query.filter(cls.category == category)
