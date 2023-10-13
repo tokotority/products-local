@@ -34,6 +34,7 @@ class TestProductModel(unittest.TestCase):
     def tearDownClass(cls):
         """This runs once after the entire test suite"""
         db.session.close()
+        db.drop_all()  # clean up test db
 
     def setUp(self):
         """This runs before each test"""
@@ -64,3 +65,22 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(product.price, 999)
         self.assertEqual(product.available, True)
         self.assertEqual(product.category, Category.ELECTRONICS)
+
+    def test_add_a_product(self):
+        """It should Create a product and add it to the database"""
+        products = Product.all()
+        self.assertEqual(products, [])
+        product = Product(
+            name="iPhone 15 Pro",
+            description="Titanium. A17 Pro chip",
+            price=999,
+            available=False,
+            category=Category.ELECTRONICS,
+        )
+        self.assertTrue(product is not None)
+        self.assertEqual(product.id, None)
+        product.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertIsNotNone(product.id)
+        products = Product.all()
+        self.assertEqual(len(products), 1)

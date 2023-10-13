@@ -48,7 +48,7 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable=True)
     price = db.Column(db.Integer)
     available = db.Column(db.Boolean(), nullable=False, default=True)
-    images_url = db.Column(db.Text, nullable=True)
+    image_url = db.Column(db.Text, nullable=True)
     category = db.Column(db.Enum(Category), nullable=True)
 
     def __repr__(self):
@@ -78,7 +78,15 @@ class Product(db.Model):
 
     def serialize(self):
         """Serializes a Product into a dictionary"""
-        return {"id": self.id, "name": self.name}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "price": self.price,
+            "available": self.available,
+            "image_url": self.image_url,
+            "category": self.category.name,  # convert enum to string
+        }
 
     def deserialize(self, data):
         """
@@ -89,6 +97,20 @@ class Product(db.Model):
         """
         try:
             self.name = data["name"]
+            self.description = data["description"]
+            self.price = data["price"]
+            self.description = data["description"]
+            if isinstance(data["available"], bool):
+                self.available = data["available"]
+            else:
+                raise DataValidationError(
+                    "Invalid type for boolean [available]: "
+                    + str(type(data["available"]))
+                )
+            self.image_url = data["image_url"]
+            self.category = getattr(
+                Category, data["category"]
+            )  # create enum from string
         except KeyError as error:
             raise DataValidationError(
                 "Invalid Product: missing " + error.args[0]
