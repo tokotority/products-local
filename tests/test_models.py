@@ -7,6 +7,7 @@ import logging
 import unittest
 from service.models import Category, Product, DataValidationError, db
 from service import app
+from tests.factories import ProductFactory
 
 
 DATABASE_URI = os.getenv(
@@ -84,3 +85,99 @@ class TestProductModel(unittest.TestCase):
         self.assertIsNotNone(product.id)
         products = Product.all()
         self.assertEqual(len(products), 1)
+
+    def test_read_a_product(self):
+        """It should Read a product"""
+        product = ProductFactory()
+        logging.debug(product)
+        product.id = None
+        product.create()
+        self.assertIsNotNone(product.id)
+        # Fetch it back
+        found_pet = Product.find(product.id)
+        self.assertEqual(found_pet.id, product.id)
+        self.assertEqual(found_pet.name, product.name)
+        self.assertEqual(found_pet.category, product.category)
+
+    def test_update_a_pet(self):
+        """It should Update a product"""
+        product = ProductFactory()
+        logging.debug(product)
+        product.id = None
+        product.create()
+        logging.debug(product)
+        self.assertIsNotNone(product.id)
+        # Change it an save it
+        product.price = 100.00
+        original_id = product.id
+        product.update()
+        self.assertEqual(product.id, original_id)
+        self.assertEqual(product.price, 100.00)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        self.assertEqual(products[0].id, original_id)
+        self.assertEqual(products[0].price, 100.00)
+
+    def test_update_no_id(self):
+        """It should not Update a product with no id"""
+        product = ProductFactory()
+        logging.debug(product)
+        product.id = None
+        self.assertRaises(DataValidationError, product.update)
+
+    def test_delete_a_product(self):
+        """It should Delete a product"""
+        product = ProductFactory()
+        product.create()
+        self.assertEqual(len(Product.all()), 1)
+        # delete the pet and make sure it isn't in the database
+        product.delete()
+        self.assertEqual(len(Product.all()), 0)
+
+    def test_list_all_products(self):
+        """It should List all products in the database"""
+        products = Product.all()
+        self.assertEqual(products, [])
+        # Create 5 Pets
+        for _ in range(5):
+            product = ProductFactory()
+            product.create()
+        # See if we get back 5 pets
+        products = Product.all()
+        self.assertEqual(len(products), 5)
+
+    def test_serialize_a_product(self):
+        """It should serialize a product"""
+        product = ProductFactory()
+        data = product.serialize()
+        self.assertNotEqual(data, None)
+        self.assertIn("id", data)
+        self.assertEqual(data["id"], product.id)
+        self.assertIn("name", data)
+        self.assertEqual(data["name"], product.name)
+        self.assertIn("description", data)
+        self.assertEqual(data["description"], product.description)
+        self.assertIn("price", data)
+        self.assertEqual(data["price"], product.price)
+        self.assertIn("available", data)
+        self.assertEqual(data["available"], product.available)
+        self.assertIn("image_url", data)
+        self.assertEqual(data["image_url"], product.image_url)
+        self.assertIn("category", data)
+        self.assertEqual(data["category"], product.category.name)
+
+    def test_deserialize_a_product(self):
+        """It should de-serialize a product"""
+        data = ProductFactory().serialize()
+        product = Product()
+        product.deserialize(data)
+        self.assertNotEqual(product, None)
+        self.assertEqual(product.id, None)
+        self.assertEqual(product.name, data["name"])
+        self.assertEqual(product.description, data["description"])
+        self.assertEqual(product.price, data["price"])
+        self.assertEqual(product.available, data["available"])
+        self.assertEqual(product.image_url, data["image_url"])
+        self.assertEqual(product.category.name, data["category"])

@@ -46,7 +46,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(63))
     description = db.Column(db.Text, nullable=True)
-    price = db.Column(db.Integer)
+    price = db.Column(db.Float)
     available = db.Column(db.Boolean(), nullable=False, default=True)
     image_url = db.Column(db.Text, nullable=True)
     category = db.Column(db.Enum(Category), nullable=True)
@@ -68,6 +68,8 @@ class Product(db.Model):
         Updates a Product to the database
         """
         logger.info("Saving %s", self.name)
+        if not self.id:
+            raise DataValidationError("Update called with empty ID field")
         db.session.commit()
 
     def delete(self):
