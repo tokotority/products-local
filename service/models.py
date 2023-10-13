@@ -1,9 +1,10 @@
 """
-Models for YourResourceModel
+Models for Product
 
 All of the models are stored in this module
 """
 import logging
+from enum import Enum
 from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger("flask.app")
@@ -14,17 +15,29 @@ db = SQLAlchemy()
 
 # Function to initialize the database
 def init_db(app):
-    """ Initializes the SQLAlchemy app """
-    YourResourceModel.init_db(app)
+    """Initializes the SQLAlchemy app"""
+    Product.init_db(app)
 
 
 class DataValidationError(Exception):
-    """ Used for an data validation errors when deserializing """
+    """Used for an data validation errors when deserializing"""
 
 
-class YourResourceModel(db.Model):
+class Category(Enum):
+    """Enumeration of valid Product Category"""
+
+    ELECTRONICS = 0
+    PERSONAL_CARE = 1
+    TOYS = 2
+    SPORTS = 3
+    FOOD = 4
+    HEALTH = 5
+    OTHERS = 100
+
+
+class Product(db.Model):
     """
-    Class that represents a YourResourceModel
+    Class that represents a Product
     """
 
     app = None
@@ -32,13 +45,18 @@ class YourResourceModel(db.Model):
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(63))
+    description = db.Column(db.Text, nullable=True)
+    price = db.Column(db.Integer)
+    available = db.Column(db.Boolean(), nullable=False, default=True)
+    images_url = db.Column(db.Text, nullable=True)
+    category = db.Column(db.Enum(Category), nullable=True)
 
     def __repr__(self):
-        return f"<YourResourceModel {self.name} id=[{self.id}]>"
+        return f"<Product {self.name} id=[{self.id}]>"
 
     def create(self):
         """
-        Creates a YourResourceModel to the database
+        Creates a Product to the database
         """
         logger.info("Creating %s", self.name)
         self.id = None  # pylint: disable=invalid-name
@@ -47,24 +65,24 @@ class YourResourceModel(db.Model):
 
     def update(self):
         """
-        Updates a YourResourceModel to the database
+        Updates a Product to the database
         """
         logger.info("Saving %s", self.name)
         db.session.commit()
 
     def delete(self):
-        """ Removes a YourResourceModel from the data store """
+        """Removes a Product from the data store"""
         logger.info("Deleting %s", self.name)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
-        """ Serializes a YourResourceModel into a dictionary """
+        """Serializes a Product into a dictionary"""
         return {"id": self.id, "name": self.name}
 
     def deserialize(self, data):
         """
-        Deserializes a YourResourceModel from a dictionary
+        Deserializes a Product from a dictionary
 
         Args:
             data (dict): A dictionary containing the resource data
@@ -73,18 +91,18 @@ class YourResourceModel(db.Model):
             self.name = data["name"]
         except KeyError as error:
             raise DataValidationError(
-                "Invalid YourResourceModel: missing " + error.args[0]
+                "Invalid Product: missing " + error.args[0]
             ) from error
         except TypeError as error:
             raise DataValidationError(
-                "Invalid YourResourceModel: body of request contained bad or no data - "
+                "Invalid Product: body of request contained bad or no data - "
                 "Error message: " + error
             ) from error
         return self
 
     @classmethod
     def init_db(cls, app):
-        """ Initializes the database session """
+        """Initializes the database session"""
         logger.info("Initializing database")
         cls.app = app
         # This is where we initialize SQLAlchemy from the Flask app
@@ -94,22 +112,22 @@ class YourResourceModel(db.Model):
 
     @classmethod
     def all(cls):
-        """ Returns all of the YourResourceModels in the database """
-        logger.info("Processing all YourResourceModels")
+        """Returns all of the Product in the database"""
+        logger.info("Processing all Product")
         return cls.query.all()
 
     @classmethod
     def find(cls, by_id):
-        """ Finds a YourResourceModel by it's ID """
+        """Finds a Product by it's ID"""
         logger.info("Processing lookup for id %s ...", by_id)
         return cls.query.get(by_id)
 
     @classmethod
     def find_by_name(cls, name):
-        """Returns all YourResourceModels with the given name
+        """Returns all Product with the given name
 
         Args:
-            name (string): the name of the YourResourceModels you want to match
+            name (string): the name of the Product you want to match
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
