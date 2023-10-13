@@ -113,14 +113,16 @@ class Product(db.Model):
             self.category = getattr(
                 Category, data["category"]
             )  # create enum from string
+        except AttributeError as error:
+            raise DataValidationError("Invalid attribute: " + error.args[0]) from error
         except KeyError as error:
             raise DataValidationError(
                 "Invalid Product: missing " + error.args[0]
             ) from error
         except TypeError as error:
             raise DataValidationError(
-                "Invalid Product: body of request contained bad or no data - "
-                "Error message: " + error
+                "Invalid Product: body of request contained bad or no data "
+                + str(error)
             ) from error
         return self
 
@@ -147,6 +149,20 @@ class Product(db.Model):
         return cls.query.get(by_id)
 
     @classmethod
+    def find_or_404(cls, product_id: int):
+        """Find a Product by it's id
+
+        :param product_id: the id of the Product to find
+        :type product_id: int
+
+        :return: an instance with the product_id, or 404_NOT_FOUND if not found
+        :rtype: Product
+
+        """
+        logger.info("Processing lookup or 404 for id %s ...", product_id)
+        return cls.query.get_or_404(product_id)
+
+    @classmethod
     def find_by_name(cls, name):
         """Returns all Product with the given name
 
@@ -155,3 +171,17 @@ class Product(db.Model):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+
+    @classmethod
+    def find_by_availability(cls, available: bool = True) -> list:
+        """Returns all Products by their availability
+
+        :param available: True for products that are available
+        :type available: str
+
+        :return: a collection of Products that are available
+        :rtype: list
+
+        """
+        logger.info("Processing available query for %s ...", available)
+        return cls.query.filter(cls.available == available)
