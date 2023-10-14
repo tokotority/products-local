@@ -67,6 +67,11 @@ tests/              - test cases package
 | image_url | *Text* | Yes | |
 | category | *Enum* | Yes | ELECTRONICS, PERSONAL_CARE, TOYS, SPORTS, FOOD, HEALTH, OTHERS |
 
+## Product Service APIs
+
+| Method | Example URI | Function | Description 
+| ------ | ----------- | -------- | -------------
+| POST   | `/products` | Create   | Create a new product, and upon success, receive a Location header specifying the new order's URI
 
 ## License
 
