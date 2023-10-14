@@ -30,6 +30,20 @@ def index():
 
 
 ######################################################################
+# LIST ALL PRODUCTS
+######################################################################
+@app.route("/products", methods=["GET"])
+def list_products():
+    """Returns all of the Products"""
+    app.logger.info("Request for product list")
+    products = Product.all()
+
+    results = [product.serialize() for product in products]
+    app.logger.info("Returning %d products", len(results))
+    return jsonify(results), status.HTTP_200_OK
+
+
+######################################################################
 # ADD A NEW PRODUCT
 ######################################################################
 @app.route("/products", methods=["POST"])

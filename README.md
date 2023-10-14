@@ -71,6 +71,7 @@ tests/              - test cases package
 
 | Method | Example URI | Function | Description 
 | ------ | ----------- | -------- | -------------
+| GET    | `/products` | List     | Returns all the products in the databse (can be filtered by a query string)
 | POST   | `/products` | Create   | Create a new product, and upon success, receive a Location header specifying the new order's URI
 
 ## License
