@@ -159,11 +159,6 @@ class Product(db.Model):
                 )  # create enum from string
         except AttributeError as error:
             raise DataValidationError("Invalid attribute: " + error.args[0]) from error
-        except TypeError as error:
-            raise DataValidationError(
-                "Invalid Product: body of request contained bad or no data "
-                + str(error)
-            ) from error
         return self
 
     @classmethod
