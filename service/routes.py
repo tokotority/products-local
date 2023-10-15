@@ -68,7 +68,7 @@ def create_products():
 ######################################################################
 # DELETE A PRODUCT
 ######################################################################
-@app.route("/products", methods=["DELETE"])
+@app.route("/products/<int:product_id>", methods=["DELETE"])
 def delete_products(product_id):
     """
     Delete a Product
