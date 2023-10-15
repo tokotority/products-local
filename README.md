@@ -73,6 +73,7 @@ tests/              - test cases package
 | ------ | ----------- | -------- | -------------
 | GET    | `/products` | List     | Returns all the products in the databse (can be filtered by a query string)
 | POST   | `/products` | Create   | Create a new product, and upon success, receive a Location header specifying the new order's URI
+| PUT   | `/products` | Update   | Update fields of a existing product
 | DELETE   | `/products` | Delete   | Delete a Product based on the id specified in the path
 
 ## License

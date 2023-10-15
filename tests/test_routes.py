@@ -143,6 +143,7 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(new_product["available"], test_product_new.available)
         self.assertEqual(new_product["image_url"], test_product_new.image_url)
         self.assertEqual(new_product["category"], test_product_new.category.name)
+
     def test_delete_product(self):
         """It should Delete a Product"""
         test_product = self._create_products(1)[0]
