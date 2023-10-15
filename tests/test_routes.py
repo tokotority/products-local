@@ -143,6 +143,18 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(new_product["available"], test_product_new.available)
         self.assertEqual(new_product["image_url"], test_product_new.image_url)
         self.assertEqual(new_product["category"], test_product_new.category.name)
+    def test_delete_product(self):
+        """It should Delete a Product"""
+        test_product = self._create_products(1)[0]
+        response = self.client.delete(f"{BASE_URL}/{test_product.id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(response.data), 0)
+        # make sure they are deleted
+        """
+        # remove comment block when read is implemented
+        response = self.client.get(f"{BASE_URL}/{test_product.id}")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        """
 
     ######################################################################
     #  T E S T   S A D   P A T H S
