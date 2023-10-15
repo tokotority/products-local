@@ -53,6 +53,22 @@ class TestYourResourceServer(TestCase):
         """This runs after each test"""
         db.session.remove()
 
+    def _create_products(self, count):
+        """Factory method to create products in bulk"""
+        products = []
+        for _ in range(count):
+            test_product = ProductFactory()
+            response = self.client.post(BASE_URL, json=test_product.serialize())
+            self.assertEqual(
+                response.status_code,
+                status.HTTP_201_CREATED,
+                "Could not create test product",
+            )
+            new_product = response.get_json()
+            test_product.id = new_product["id"]
+            products.append(test_product)
+        return products
+
     ######################################################################
     #  P L A C E   T E S T   C A S E S   H E R E
     ######################################################################
@@ -61,6 +77,14 @@ class TestYourResourceServer(TestCase):
         """It should call the home page"""
         resp = self.client.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+    def test_get_product_list(self):
+        """It should Get a list of Products"""
+        self._create_products(5)
+        response = self.client.get(BASE_URL)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), 5)
 
     def test_create_product(self):
         """It should Create a new Product"""
