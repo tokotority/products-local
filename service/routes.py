@@ -66,6 +66,34 @@ def create_products():
 
 
 ######################################################################
+# UPDATE A PRODUCT
+######################################################################
+@app.route("/products", methods=["PUT"])
+def update_product():
+    """
+    Update a Product
+    This endpoint will update a existing Product based the data in the body that is posted
+    or return 404 there is no product with id provided in payload
+    """
+
+    app.logger.info("Request to update a product")
+    check_content_type("application/json")
+
+    product_id = request.get_json()["id"]
+    product: Product = Product.find(product_id)
+    if not product:
+        app.logger.info(f"Invalid product id: {product_id}")
+        abort(
+            status.HTTP_404_NOT_FOUND, f"There is no exist product with id {product_id}"
+        )
+    product.deserialize_update(request.get_json())
+    product.update()
+    message = product.serialize()
+
+    return jsonify(message), status.HTTP_200_OK
+
+
+######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 

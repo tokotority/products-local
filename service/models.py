@@ -126,6 +126,46 @@ class Product(db.Model):
             ) from error
         return self
 
+    def deserialize_update(self, data):
+        """
+        Deserializes a Product from a dictionary
+
+        Args:
+            data (dict): A dictionary containing the resource data
+            it only contain keys of fields to be updated
+        """
+        try:
+            if "name" in data:
+                self.name = data["name"]
+            if "description" in data:
+                self.description = data["description"]
+            if "price" in data:
+                self.price = data["price"]
+            if "description" in data:
+                self.description = data["description"]
+            if "available" in data:
+                if isinstance(data["available"], bool):
+                    self.available = data["available"]
+                else:
+                    raise DataValidationError(
+                        "Invalid type for boolean [available]: "
+                        + str(type(data["available"]))
+                    )
+            if "image_url" in data:
+                self.image_url = data["image_url"]
+            if "category" in data:
+                self.category = getattr(
+                    Category, data["category"]
+                )  # create enum from string
+        except AttributeError as error:
+            raise DataValidationError("Invalid attribute: " + error.args[0]) from error
+        except TypeError as error:
+            raise DataValidationError(
+                "Invalid Product: body of request contained bad or no data "
+                + str(error)
+            ) from error
+        return self
+
     @classmethod
     def init_db(cls, app):
         """Initializes the database session"""
