@@ -104,7 +104,7 @@ def update_product(product_id):
 
     product: Product = Product.find(product_id)
     if not product:
-        app.logger.info(f"Invalid product id: {product_id}")
+        app.logger.info("Invalid product id: %s", product_id)
         abort(
             status.HTTP_404_NOT_FOUND, f"There is no exist product with id {product_id}"
         )

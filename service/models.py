@@ -126,6 +126,7 @@ class Product(db.Model):
             ) from error
         return self
 
+    # flake8: noqa: C901
     def deserialize_update(self, data):
         """
         Deserializes a Product from a dictionary
