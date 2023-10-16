@@ -4,7 +4,7 @@ My Service
 Describe what your service does here
 """
 
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, url_for
 from service.common import status  # HTTP Status Codes
 from service.models import Product
 
@@ -81,9 +81,7 @@ def create_products():
     product.deserialize(request.get_json())
     product.create()
     message = product.serialize()
-    # TO-DO: Update location_url once Read is implemented
-    # location_url = url_for("get_products", product_id=product.id, _external=True)
-    location_url = "TO BE UPDATED"
+    location_url = url_for("read_products", product_id=product.id, _external=True)
     app.logger.info("Product with ID [%s] created.", product.id)
     return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
 

@@ -106,17 +106,17 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(new_product["image_url"], test_product.image_url)
         self.assertEqual(new_product["category"], test_product.category.name)
 
-        # TO-DO: Check that the location header was correct
+        # Check that the location header was correct
 
-        # response = self.client.get(location)
-        # self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # new_product = response.get_json()
-        # self.assertEqual(new_product["name"], test_product.name)
-        # self.assertEqual(new_product["description"], test_product.description)
-        # self.assertEqual(new_product["price"], test_product.price)
-        # self.assertEqual(new_product["available"], test_product.available)
-        # self.assertEqual(new_product["image_url"], test_product.image_url)
-        # self.assertEqual(new_product["category"], test_product.category.name)
+        response = self.client.get(location)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        new_product = response.get_json()
+        self.assertEqual(new_product["name"], test_product.name)
+        self.assertEqual(new_product["description"], test_product.description)
+        self.assertEqual(new_product["price"], test_product.price)
+        self.assertEqual(new_product["available"], test_product.available)
+        self.assertEqual(new_product["image_url"], test_product.image_url)
+        self.assertEqual(new_product["category"], test_product.category.name)
 
     def test_update_product(self):
         """It should update a Product"""
