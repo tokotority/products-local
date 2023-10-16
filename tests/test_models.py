@@ -249,7 +249,7 @@ class TestProductModel(unittest.TestCase):
             product.create()
         logging.debug(products)
         # make sure they got saved
-        self.assertEqual(len(product.all()), 5)
+        self.assertEqual(len(Product.all()), 5)
         # find the 2nd product in the list
         product = Product.find(products[1].id)
         self.assertIsNot(product, None)
@@ -300,7 +300,7 @@ class TestProductModel(unittest.TestCase):
         for product in products:
             product.create()
 
-        product = product.find_or_404(products[1].id)
+        product = Product.find_or_404(products[1].id)
         self.assertIsNot(product, None)
         self.assertEqual(product.id, products[1].id)
         self.assertEqual(product.name, products[1].name)

@@ -153,11 +153,10 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(response.data), 0)
         # make sure they are deleted
-        """
+
         # remove comment block when read is implemented
-        response = self.client.get(f"{BASE_URL}/{test_product.id}")
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        """
+        # response = self.client.get(f"{BASE_URL}/{test_product.id}")
+        # self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     ######################################################################
     #  T E S T   S A D   P A T H S
