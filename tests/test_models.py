@@ -212,6 +212,36 @@ class TestProductModel(unittest.TestCase):
         product = Product()
         self.assertRaises(DataValidationError, product.deserialize, data)
 
+    def test_deserialize_update_a_product(self):
+        """It should de-serialize-update a product"""
+        data = ProductFactory().serialize()
+        product = Product()
+        product.deserialize_update(data)
+        self.assertNotEqual(product, None)
+        self.assertEqual(product.id, None)
+        self.assertEqual(product.name, data["name"])
+        self.assertEqual(product.description, data["description"])
+        self.assertEqual(product.price, data["price"])
+        self.assertEqual(product.available, data["available"])
+        self.assertEqual(product.image_url, data["image_url"])
+        self.assertEqual(product.category.name, data["category"])
+
+    def test_deserialize_update_bad_available(self):
+        """It should not deserialize-update a bad available attribute"""
+        test_product = ProductFactory()
+        data = test_product.serialize()
+        data["available"] = "true"
+        product = Product()
+        self.assertRaises(DataValidationError, product.deserialize_update, data)
+
+    def test_deserialize_update_bad_category(self):
+        """It should not deserialize-update a bad category attribute"""
+        test_product = ProductFactory()
+        data = test_product.serialize()
+        data["category"] = "xxx"  # wrong case
+        product = Product()
+        self.assertRaises(DataValidationError, product.deserialize_update, data)
+
     def test_find_product(self):
         """It should Find a product by ID"""
         products = ProductFactory.create_batch(5)
@@ -219,7 +249,7 @@ class TestProductModel(unittest.TestCase):
             product.create()
         logging.debug(products)
         # make sure they got saved
-        self.assertEqual(len(product.all()), 5)
+        self.assertEqual(len(Product.all()), 5)
         # find the 2nd product in the list
         product = Product.find(products[1].id)
         self.assertIsNot(product, None)
@@ -270,7 +300,7 @@ class TestProductModel(unittest.TestCase):
         for product in products:
             product.create()
 
-        product = product.find_or_404(products[1].id)
+        product = Product.find_or_404(products[1].id)
         self.assertIsNot(product, None)
         self.assertEqual(product.id, products[1].id)
         self.assertEqual(product.name, products[1].name)

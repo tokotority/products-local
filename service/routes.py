@@ -4,7 +4,7 @@ My Service
 Describe what your service does here
 """
 
-from flask import jsonify, request, url_for, abort
+from flask import jsonify, request, abort
 from service.common import status  # HTTP Status Codes
 from service.models import Product
 
@@ -18,10 +18,33 @@ from . import app
 @app.route("/")
 def index():
     """Root URL response"""
-    return (
-        "Reminder: return some useful information in json format about the service here",
-        status.HTTP_200_OK,
-    )
+    data = {
+        "service_name": "Product Service",
+        "description": "This service provides products for a catalog (id, name, description, price. etc.).",
+        "endpoints": [
+            {
+                "path": "/products",
+                "description": "Returns all the products in the database (can be filtered by a query string)",
+                "methods": ["GET"],
+            },
+            {
+                "path": "/products",
+                "description": "Create a new product.",
+                "methods": ["POST"],
+            },
+            {
+                "path": "/products/<int:product_id>",
+                "description": "Update fields of a existing product",
+                "methods": ["PUT"],
+            },
+            {
+                "path": "/products/<int:product_id>",
+                "description": "Delete a Product based on the id specified in the path",
+                "methods": ["DELETE"],
+            },
+        ],
+    }
+    return jsonify(data), status.HTTP_200_OK
 
 
 ######################################################################
@@ -66,6 +89,32 @@ def create_products():
 
 
 ######################################################################
+# UPDATE A PRODUCT
+######################################################################
+@app.route("/products/<int:product_id>", methods=["PUT"])
+def update_product(product_id):
+    """
+    Update a Product
+    This endpoint will update a existing Product based the data in the body that is posted
+    or return 404 there is no product with id provided in payload
+    """
+
+    app.logger.info("Request to update a product")
+    check_content_type("application/json")
+
+    product: Product = Product.find(product_id)
+    if not product:
+        app.logger.info("Invalid product id: %s", product_id)
+        abort(
+            status.HTTP_404_NOT_FOUND, f"There is no exist product with id {product_id}"
+        )
+    product.deserialize_update(request.get_json())
+    product.update()
+    message = product.serialize()
+
+    return jsonify(message), status.HTTP_200_OK
+
+
 # DELETE A PRODUCT
 ######################################################################
 @app.route("/products/<int:product_id>", methods=["DELETE"])
