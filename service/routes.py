@@ -33,12 +33,12 @@ def index():
                 "methods": ["POST"],
             },
             {
-                "path": "/products",
+                "path": "/products/<int:product_id>",
                 "description": "Update fields of a existing product",
                 "methods": ["PUT"],
             },
             {
-                "path": "/products",
+                "path": "/products/<int:product_id>",
                 "description": "Delete a Product based on the id specified in the path",
                 "methods": ["DELETE"],
             },
@@ -91,8 +91,8 @@ def create_products():
 ######################################################################
 # UPDATE A PRODUCT
 ######################################################################
-@app.route("/products", methods=["PUT"])
-def update_product():
+@app.route("/products/<int:product_id>", methods=["PUT"])
+def update_product(product_id):
     """
     Update a Product
     This endpoint will update a existing Product based the data in the body that is posted
@@ -102,7 +102,6 @@ def update_product():
     app.logger.info("Request to update a product")
     check_content_type("application/json")
 
-    product_id = request.get_json()["id"]
     product: Product = Product.find(product_id)
     if not product:
         app.logger.info(f"Invalid product id: {product_id}")

@@ -132,7 +132,9 @@ class TestYourResourceServer(TestCase):
         test_product_new = ProductFactory()
         test_product_new.id = new_product["id"]
         logging.debug("Test Product: %s", test_product_new.serialize())
-        response = self.client.put(BASE_URL, json=test_product_new.serialize())
+        response = self.client.put(
+            f"{BASE_URL}/{test_product_new.id}", json=test_product_new.serialize()
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Check the data is correct
@@ -209,5 +211,7 @@ class TestYourResourceServer(TestCase):
         test_product_new = ProductFactory()
         test_product_new.id = new_product["id"] + 1
         logging.debug("Test Product: %s", test_product_new.serialize())
-        response = self.client.put(BASE_URL, json=test_product_new.serialize())
+        response = self.client.put(
+            f"{BASE_URL}/{test_product_new.id}", json=test_product_new.serialize()
+        )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
