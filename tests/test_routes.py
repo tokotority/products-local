@@ -8,6 +8,7 @@ Test cases can be run with the following:
 import os
 import logging
 from unittest import TestCase
+from urllib.parse import quote_plus
 from service import app
 from service.models import db, init_db, Product
 from service.common import status  # HTTP Status Codes
@@ -85,6 +86,55 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(len(data), 5)
+
+    def test_query_product_list_by_category(self):
+        """It should Query Products by Category"""
+        products = self._create_products(10)
+        test_category = products[0].category.name
+        category_products = [
+            product for product in products if product.category.name == test_category
+        ]
+        response = self.client.get(
+            BASE_URL, query_string=f"category={quote_plus(test_category)}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(category_products))
+        # check the data just to be sure
+        for product in data:
+            self.assertEqual(product["category"], test_category)
+
+    def test_query_product_list_by_name(self):
+        """It should Query Products by Name"""
+        products = self._create_products(10)
+        test_name = products[0].name
+        name_products = [product for product in products if product.name == test_name]
+        response = self.client.get(
+            BASE_URL, query_string=f"name={quote_plus(test_name)}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(name_products))
+        # check the data just to be sure
+        for product in data:
+            self.assertEqual(product["name"], test_name)
+
+    def test_query_product_list_by_availability(self):
+        """It should Query Products by availability"""
+        products = self._create_products(10)
+        test_availability = products[0].available
+        available_products = [
+            product for product in products if product.available == test_availability
+        ]
+        response = self.client.get(
+            BASE_URL, query_string=f"available={test_availability}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(available_products))
+        # check the data just to be sure
+        for product in data:
+            self.assertEqual(product["available"], test_availability)
 
     def test_create_product(self):
         """It should Create a new Product"""

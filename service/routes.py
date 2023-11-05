@@ -59,7 +59,20 @@ def index():
 def list_products():
     """Returns all of the Products"""
     app.logger.info("Request for product list")
+    category = request.args.get("category")
+    name = request.args.get("name")
+    available = request.args.get("available")
     products = Product.all()
+
+    if category:
+        products_category = Product.find_by_category(category)
+        products = [product for product in products if product in products_category]
+    if name:
+        products_name = Product.find_by_name(name)
+        products = [product for product in products if product in products_name]
+    if available:
+        products_available = Product.find_by_availability(available)
+        products = [product for product in products if product in products_available]
 
     results = [product.serialize() for product in products]
     app.logger.info("Returning %d products", len(results))
