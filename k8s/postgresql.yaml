@@ -72,9 +72,9 @@ spec:
     - port: 5432
       targetPort: 5432
 
----
-# This secret can also be created from the command line using environment variables
-#
+# ---
+# # This secret can also be created from the command line using environment variables
+# #
 # export DATABASE_URI='postgresql://postgres:postgres@postgres:5432/postgres'
 # export POSTGRES_PASSWORD='postgres'
 
@@ -82,10 +82,10 @@ spec:
 #     --from-literal=password=$POSTGRES_PASSWORD
 #     --from-literal=database_uri=$DATABASE_URI
 
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-creds
-data:
-  password: cG9zdGdyZXM=
-  database_uri: cG9zdGdyZXNxbDovL3Bvc3RncmVzOnBvc3RncmVzQHBvc3RncmVzOjU0MzIvcG9zdGdyZXM=
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: postgres-creds
+# data:
+#   password: cG9zdGdyZXM=
+#   database_uri: cG9zdGdyZXNxbDovL3Bvc3RncmVzOnBvc3RncmVzQHBvc3RncmVzOjU0MzIvcG9zdGdyZXM=
