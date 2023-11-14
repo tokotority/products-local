@@ -217,6 +217,35 @@ class TestYourResourceServer(TestCase):
         response = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_change_product_availability(self):
+        """It should Change the availability of a single Product"""
+        # Manually create a product with initial availability set to True
+        test_product = Product(
+            id=123456789,
+            name="Test Product",
+            description="Test Description",
+            price=19.99,
+            available=True,
+            image_url="test_image.jpg",
+            category="TOYS",
+        )
+        # Add the product to the database
+        db.session.add(test_product)
+        db.session.commit()
+        # Check the initial availability
+        self.assertTrue(test_product.available)
+        # Change the availability
+        response = self.client.post(f"{BASE_URL}/{test_product.id}/change_availability")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Check if the availability has changed in the database
+        updated_product = Product.query.get(test_product.id)
+        self.assertFalse(updated_product.available)
+
+    def test_change_product_availability_not_found(self):
+        """It should not Change the availability of a Product that not be found"""
+        response = self.client.post(f"{BASE_URL}/0/change_availability")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     ######################################################################
     #  T E S T   S A D   P A T H S
     ######################################################################

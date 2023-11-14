@@ -6,7 +6,7 @@ Describe what your service does here
 
 from flask import jsonify, request, abort, url_for
 from service.common import status  # HTTP Status Codes
-from service.models import Product
+from service.models import Product, db
 
 # Import Flask application
 from . import app
@@ -161,6 +161,36 @@ def read_products(product_id):
 
     app.logger.info("Returning product with ID [%s].", product_id)
     return jsonify(product.serialize()), status.HTTP_200_OK
+
+
+######################################################################
+# ACTION TO CHANGE A PRODUCT'S AVAILABILITY
+######################################################################
+@app.route("/products/<int:product_id>/change_availability", methods=["POST"])
+def change_product_availability(product_id):
+    """
+    Change Product Availability
+    This endpoint will change the availability of a Product based on the id specified in the path.
+    """
+    app.logger.info(
+        "Request to change availability for product with id: %s", product_id
+    )
+    product = Product.find(product_id)
+    if not product:
+        abort(
+            status.HTTP_404_NOT_FOUND,
+            f"Product with id '{product_id}' was not found.",
+        )
+
+    new_availability = not product.available
+    product.available = new_availability
+    db.session.commit()
+
+    app.logger.info("Product availability changed for ID [%s].", product_id)
+    return (
+        jsonify({"message": f"Product availability changed to {new_availability}"}),
+        status.HTTP_200_OK,
+    )
 
 
 ######################################################################
