@@ -20,6 +20,7 @@ DATABASE_URI = os.getenv(
 )
 
 BASE_URL = "/products"
+COLLECT_URL = "/products/collect"
 
 
 ######################################################################
@@ -167,6 +168,29 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(new_product["available"], test_product.available)
         self.assertEqual(new_product["image_url"], test_product.image_url)
         self.assertEqual(new_product["category"], test_product.category.name)
+
+    def test_create_collect_products(self):
+        """It should Create a new Product"""
+        test_products_data = [ProductFactory().to_dict() for _ in range(5)]
+        logging.debug("Test Product: %s", str(test_products_data))
+        response = self.client.post(COLLECT_URL, json=test_products_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Check the data is correct
+        new_products = response.get_json()
+        for i, test_product_data in enumerate(test_products_data):
+            self.assertEqual(new_products[i]["name"], test_product_data["name"])
+            self.assertEqual(
+                new_products[i]["description"], test_product_data["description"]
+            )
+            self.assertEqual(new_products[i]["price"], test_product_data["price"])
+            self.assertEqual(
+                new_products[i]["available"], test_product_data["available"]
+            )
+            self.assertEqual(
+                new_products[i]["image_url"], test_product_data["image_url"]
+            )
+            self.assertEqual(new_products[i]["category"], test_product_data["category"])
 
     def test_update_product(self):
         """It should update a Product"""

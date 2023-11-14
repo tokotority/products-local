@@ -54,6 +54,18 @@ class Product(db.Model):
     def __repr__(self):
         return f"<Product {self.name} id=[{self.id}]>"
 
+    def to_dict(self):
+        """Converts the Product instance to a dictionary."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "price": self.price,
+            "available": self.available,
+            "image_url": self.image_url,
+            "category": self.category.name,
+        }
+
     def create(self):
         """
         Creates a Product to the database
@@ -235,3 +247,25 @@ class Product(db.Model):
         """
         logger.info("Processing category query for %s ...", category)
         return cls.query.filter(cls.category == category)
+
+    @classmethod
+    def create_multiple_products(cls, products_data):
+        """
+        Adds multiple products to the database.
+        :param products_data: List of dictionaries, where each dictionary contains data for one product.
+        """
+        products = []
+        for data in products_data:
+            product = cls(
+                name=data["name"],
+                description=data.get("description", None),
+                price=data["price"],
+                available=data["available"],
+                image_url=data.get("image_url", None),
+                category=data.get("category", None),
+            )
+            products.append(product)
+
+        db.session.add_all(products)
+        db.session.commit()
+        return products

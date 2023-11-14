@@ -100,6 +100,26 @@ def create_products():
 
 
 ######################################################################
+# ADD MULTIPLE NEW PRODUCT
+######################################################################
+@app.route("/products/collect", methods=["POST"])
+def create_collect_products():
+    """
+    Creates multiple Products
+    This endpoint will create multiple Products based the data in the body that is posted
+    """
+    app.logger.info("Request to create multiple products")
+    check_content_type("application/json")
+    products_data = request.get_json()
+    products = Product.create_multiple_products(products_data)
+    message = []
+    for product in products:
+        app.logger.info("Product with ID [%s] created.", product.id)
+        message.append(product.serialize())
+    return jsonify(message), status.HTTP_201_CREATED
+
+
+######################################################################
 # UPDATE A PRODUCT
 ######################################################################
 @app.route("/products/<int:product_id>", methods=["PUT"])
