@@ -309,3 +309,27 @@ class TestProductModel(unittest.TestCase):
     def test_find_or_404_not_found(self):
         """It should return 404 not found"""
         self.assertRaises(NotFound, Product.find_or_404, 0)
+
+    def test_create_multiple_products(self):
+        """It should Create multiple products and add them to the database"""
+        products = Product.all()
+        self.assertEqual(products, [])
+
+        # Create 5 products
+        products_data = [ProductFactory().to_dict() for _ in range(5)]
+        created_products = Product.create_multiple_products(products_data)
+
+        products = Product.all()
+        self.assertEqual(len(products), 5)
+
+        # Check the correctness of data content
+        for i, data in enumerate(products_data):
+            product = products[i]
+            self.assertIsNotNone(product.id)
+            self.assertEqual(product.name, data["name"])
+            self.assertEqual(product.description, data["description"])
+            self.assertEqual(product.price, data["price"])
+            self.assertEqual(product.available, data["available"])
+            self.assertEqual(product.category.name, data["category"])
+
+            self.assertEqual(created_products[i], product)
