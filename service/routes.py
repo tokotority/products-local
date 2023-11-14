@@ -33,6 +33,11 @@ def index():
                 "methods": ["POST"],
             },
             {
+                "path": "/products/collect",
+                "description": "Create multiple Products.",
+                "methods": ["POST"],
+            },
+            {
                 "path": "/products/<int:product_id>",
                 "description": "Update fields of a existing product",
                 "methods": ["PUT"],
@@ -41,6 +46,11 @@ def index():
                 "path": "/products/<int:product_id>",
                 "description": "Delete a Product based on the id specified in the path",
                 "methods": ["DELETE"],
+            },
+            {
+                "path": "/products/<int:product_id>/change_availability",
+                "description": "Change the availability of a Product based on the id specified in the path",
+                "methods": ["POST"],
             },
         ],
     }

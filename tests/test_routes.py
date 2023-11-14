@@ -170,7 +170,7 @@ class TestYourResourceServer(TestCase):
         self.assertEqual(new_product["category"], test_product.category.name)
 
     def test_create_collect_products(self):
-        """It should Create a new Product"""
+        """It should Create multiple Products"""
         test_products_data = [ProductFactory().to_dict() for _ in range(5)]
         logging.debug("Test Product: %s", str(test_products_data))
         response = self.client.post(COLLECT_URL, json=test_products_data)
