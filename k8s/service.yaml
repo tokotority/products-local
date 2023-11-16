@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: project
+  name: products
 spec:
   selector:
-    app: project
+    app: products
   type: ClusterIP
   internalTrafficPolicy: Local
   ports:

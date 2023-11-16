@@ -1,53 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: project
+  name: products
   labels:
-    app: project
+    app: products
 spec:
-  replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 0%
-      maxUnavailable: 50%
+  replicas: 1
   selector:
     matchLabels:
-      app: project
+      app: products
   template:
     metadata:
       labels:
-        app: project
+        app: products
     spec:
-      imagePullSecrets:
-      - name: all-icr-io
       restartPolicy: Always
       containers:
-      - name: project
-        # image: cluster-registry:32000/project:1.0
-        image: project
+      - name: products
+        image: docker.io/gorgeous/devops-23fall-products:v2
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8000
-          protocol: TCP
+          - containerPort: 8000
         env:
-          - name: RETRY_COUNT
-            value: "10"
           - name: DATABASE_URI
             valueFrom:
               secretKeyRef:
-                name: postgres-creds
+                name: postgres-secret
                 key: database_uri
         readinessProbe:
           initialDelaySeconds: 5
-          periodSeconds: 30
+          periodSeconds: 10
           httpGet:
             path: /health
             port: 8000
         resources:
           limits:
-            cpu: "0.50"
+            cpu: "1.0"
             memory: "128Mi"
           requests:
-            cpu: "0.25"
-            memory: "64Mi"
+            cpu: "1.0"
+            memory: "128Mi"
