@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products
+  labels:
+    app: products
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: products
+  template:
+    metadata:
+      labels:
+        app: products
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: products
+        image: docker.io/gorgeous/devops-23fall-products:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8000
+        env:
+          - name: DATABASE_URI
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: database_uri
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          httpGet:
+            path: /health
+            port: 8000
+        resources:
+          limits:
+            cpu: "1.0"
+            memory: "128Mi"
+          requests:
+            cpu: "1.0"
+            memory: "128Mi"
