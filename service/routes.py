@@ -27,43 +27,43 @@ def health():
 @app.route("/")
 def index():
     """Root URL response"""
-    data = {
-        "service_name": "Product Service",
-        "description": "This service provides products for a catalog (id, name, description, price. etc.).",
-        "endpoints": [
-            {
-                "path": "/products",
-                "description": "Returns all the products in the database (can be filtered by a query string)",
-                "methods": ["GET"],
-            },
-            {
-                "path": "/products",
-                "description": "Create a new product.",
-                "methods": ["POST"],
-            },
-            {
-                "path": "/products/collect",
-                "description": "Create multiple Products.",
-                "methods": ["POST"],
-            },
-            {
-                "path": "/products/<int:product_id>",
-                "description": "Update fields of a existing product",
-                "methods": ["PUT"],
-            },
-            {
-                "path": "/products/<int:product_id>",
-                "description": "Delete a Product based on the id specified in the path",
-                "methods": ["DELETE"],
-            },
-            {
-                "path": "/products/<int:product_id>/change_availability",
-                "description": "Change the availability of a Product based on the id specified in the path",
-                "methods": ["POST"],
-            },
-        ],
-    }
-    return jsonify(data), status.HTTP_200_OK
+    # data = {
+    #     "service_name": "Product Service",
+    #     "description": "This service provides products for a catalog (id, name, description, price. etc.).",
+    #     "endpoints": [
+    #         {
+    #             "path": "/products",
+    #             "description": "Returns all the products in the database (can be filtered by a query string)",
+    #             "methods": ["GET"],
+    #         },
+    #         {
+    #             "path": "/products",
+    #             "description": "Create a new product.",
+    #             "methods": ["POST"],
+    #         },
+    #         {
+    #             "path": "/products/collect",
+    #             "description": "Create multiple Products.",
+    #             "methods": ["POST"],
+    #         },
+    #         {
+    #             "path": "/products/<int:product_id>",
+    #             "description": "Update fields of a existing product",
+    #             "methods": ["PUT"],
+    #         },
+    #         {
+    #             "path": "/products/<int:product_id>",
+    #             "description": "Delete a Product based on the id specified in the path",
+    #             "methods": ["DELETE"],
+    #         },
+    #         {
+    #             "path": "/products/<int:product_id>/change_availability",
+    #             "description": "Change the availability of a Product based on the id specified in the path",
+    #             "methods": ["POST"],
+    #         },
+    #     ],
+    # }
+    return app.send_static_file("index.html")
 
 
 ######################################################################
