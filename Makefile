@@ -1,5 +1,6 @@
 # These can be overidden with env vars.
 CLUSTER ?= nyu-devops
+IMAGE_VERSION = $(shell date +"%Y%m%d%H%M%S")
 
 .PHONY: help
 help: ## Display this help
@@ -65,3 +66,7 @@ depoy: ## Deploy the service on local Kubernetes
 	$(info Deploying service locally...)
 	kubectl apply -f deploy/
 
+.PHONY: build-deploy-image
+build-deploy-image: ## Build the Deploy service image
+	$(info Build the Deploy service image)
+	docker build --platform linux/amd64 -t gorgeous/devops-23fall-products:$(IMAGE_VERSION) -f k8s/Dockerfile .
