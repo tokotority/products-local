@@ -104,3 +104,33 @@ Scenario: Read a Product by ID
     And I should see "True" in the "available" dropdown
     And I should see "sample.url" in the "image_url" field
     And I should see "ELECTRONICS" in the "category" field
+
+Scenario: Query a Product by Name
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I set the "Name" to "iPhone 15"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "iPhone 15" in the results
+    And I should see "999" in the results
+    And I should see "true" in the results
+    And I should see "ELECTRONICS" in the results
+    And I should see "Best iphone for now" in the results
+    And I should see "sample.url" in the results
+
+Scenario: Query a Product by Category
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I select "FOOD" in the "Category" dropdown
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "milk" in the results
+    And I should see "egg" in the results
+
+Scenario: Query a Product by Available
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I select "False" in the "Available" dropdown
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "iPhone 16" in the results
