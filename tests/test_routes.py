@@ -10,7 +10,7 @@ import logging
 from unittest import TestCase
 from urllib.parse import quote_plus
 from service import app
-from service.models import db, init_db, Product
+from service.models import db, init_db, Product, Category
 from service.common import status  # HTTP Status Codes
 from tests.factories import ProductFactory
 
@@ -276,6 +276,18 @@ class TestYourResourceServer(TestCase):
         """It should not Change the availability of a Product that not be found"""
         response = self.client.put(f"{BASE_URL}/0/change_availability")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_categories(self):
+        """It should return all product categories."""
+        response = self.client.get("/categories")
+        self.assertEqual(response.status_code, 200)
+
+        data = response.get_json()
+        self.assertIsInstance(data, list)
+
+        # Compare with the expected categories
+        expected_categories = [category.name for category in Category]
+        self.assertListEqual(data, expected_categories)
 
     ######################################################################
     #  T E S T   S A D   P A T H S
