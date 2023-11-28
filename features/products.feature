@@ -43,3 +43,14 @@ Scenario: Create a Product
     And I should see "100" in the "Price" field
     And I should see "True" in the "Available" dropdown
     And I should see "sample.url" in the "image_url" field
+
+Scenario: List all Products
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "iPhone 15" in the results
+    And I should see "iPhone 16" in the results
+    And I should see "milk" in the results
+    And I should see "egg" in the results
+
