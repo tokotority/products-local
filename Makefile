@@ -69,4 +69,4 @@ depoy: ## Deploy the service on local Kubernetes
 .PHONY: build-deploy-image
 build-deploy-image: ## Build the Deploy service image
 	$(info Build the Deploy service image)
-	docker build -t gorgeous/devops-23fall-products:$(IMAGE_VERSION) -f k8s/Dockerfile .
+	docker build --platform linux/amd64 -t gorgeous/devops-23fall-products:$(IMAGE_VERSION) -f k8s/Dockerfile .
