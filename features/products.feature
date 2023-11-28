@@ -6,9 +6,8 @@ Feature: The Products service back-end
 Background:
     Given the following products
         | name    | description | price | available | image_url  | category    |
-        | iPhone  | iPhone 14   | 999   | True      | sample.url | ELECTRONICS |
-        | iPhone  | iPhone 15   | 999   | True      | sample.url | ELECTRONICS |
-        | iPhone  | iPhone 16   | 999   | False     | sample.url | ELECTRONICS |
+        | iPhone 15  | Best iphone for now  | 999   | True      | sample.url | ELECTRONICS |
+        | iPhone 16  | Best iphone for now  | 999   | False      | sample.url | ELECTRONICS |
         | milk    | Oat Milk    | 10    | True      | sample.url | FOOD        |
         | egg     | Organic Egg | 1     | True      | sample.url | FOOD        |
 
