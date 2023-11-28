@@ -20,7 +20,7 @@ Scenario: The server is running
 Scenario: Create a Product
     When I visit the "Home Page"
     And I set the "Name" to "Ball"
-    And I set the "Category" to "SPORTS"
+    And I select "SPORTS" in the "Category" dropdown
     And I set the "Description" to "Basketball"
     And I set the "Price" to "100"
     And I select "True" in the "Available" dropdown
