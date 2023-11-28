@@ -16,7 +16,7 @@ $(function () {
         } else {
             $("#product_available").val("false");
         }
-        $("#image_url").val(res.image_url);
+        $("#product_image_url").val(res.image_url);
     }
 
     /// Clears all form fields
@@ -26,7 +26,7 @@ $(function () {
         $("#product_description").val("");
         $("#product_price").val("");
         $("#product_available").val("");
-        $("#image_url").val("");
+        $("#product_image_url").val("");
     }
 
     // Updates the flash message area
@@ -46,7 +46,7 @@ $(function () {
         let description = $("#product_description").val();
         let price = $("#product_price").val();
         let available = $("#product_available").val() == "true";
-        let image_url = $("#image_url").val();
+        let image_url = $("#product_image_url").val();
 
         let data = {
             "name": name,
@@ -88,7 +88,7 @@ $(function () {
         let description = $("#product_description").val();
         let price = $("#product_price").val();
         let available = $("#product_available").val() == "true";
-        let image_url = $("#image_url").val();
+        let image_url = $("#product_image_url").val();
 
         let data = {
             "name": name,
