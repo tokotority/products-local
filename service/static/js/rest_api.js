@@ -82,7 +82,8 @@ $(function () {
     // ****************************************
 
     $("#update-btn").click(function () {
-
+        
+        let name = $("#product_name").val();
         let product_id = $("#product_id").val();
         let category = $("#product_category").val();
         let description = $("#product_description").val();
