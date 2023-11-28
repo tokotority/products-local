@@ -7,6 +7,7 @@ Describe what your service does here
 from flask import jsonify, request, abort, url_for
 from service.common import status  # HTTP Status Codes
 from service.models import Product, Category, db
+import sqlalchemy
 
 # Import Flask application
 from . import app
@@ -117,10 +118,10 @@ def create_products():
         location_url = url_for("read_products", product_id=product.id, _external=True)
         app.logger.info("Product with ID [%s] created.", product.id)
         return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
-    except Exception as e:
+    except sqlalchemy.exc.PendingRollbackError as rollback_error:
         # Rollback the session in case of error
         db.session.rollback()
-        app.logger.error("Error creating product: %s", str(e))
+        app.logger.error("Error creating product: %s", str(rollback_error))
         # Return an error response with status code
         return jsonify({"error": "Error creating product"}), status.HTTP_400_BAD_REQUEST
 
