@@ -44,9 +44,15 @@ $(function () {
         let name = $("#product_name").val();
         let category = $("#product_category").val();
         let description = $("#product_description").val();
-        let price = $("#product_price").val();
+        let price = parseFloat($("#product_price").val());
         let available = $("#product_available").val() == "true";
         let image_url = $("#product_image_url").val();
+
+        // Price Validation check
+        if (isNaN(price) || price <= 0) {
+            flash_message("Price must be a number greater than 0.");
+            return;
+        }
 
         let data = {
             "name": name,
@@ -273,12 +279,11 @@ $(function () {
 
 function loadCategories() {
     $.ajax({
-        url: '/categories',  // Your Flask endpoint that returns category list
+        url: '/categories',
         type: 'GET',
         dataType: 'json',
         success: function(categories) {
             var categorySelect = $('#product_category');
-            categorySelect.empty(); // Clear existing options
 
             $.each(categories, function(index, category) {
                 categorySelect.append($('<option></option>').attr('value', category).text(category));
