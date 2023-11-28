@@ -6,7 +6,7 @@ Describe what your service does here
 
 from flask import jsonify, request, abort, url_for
 from service.common import status  # HTTP Status Codes
-from service.models import Product, db
+from service.models import Product, Category, db
 
 # Import Flask application
 from . import app
@@ -165,6 +165,7 @@ def update_product(product_id):
     return jsonify(message), status.HTTP_200_OK
 
 
+######################################################################
 # DELETE A PRODUCT
 ######################################################################
 @app.route("/products/<int:product_id>", methods=["DELETE"])
@@ -230,6 +231,16 @@ def change_product_availability(product_id):
         jsonify({"message": f"Product availability changed to {new_availability}"}),
         status.HTTP_200_OK,
     )
+
+
+######################################################################
+# get product categories
+######################################################################
+@app.route("/categories", methods=["GET"])
+def get_categories():
+    """Endpoint to get product categories"""
+    categories = [category.name for category in Category]
+    return jsonify(categories)
 
 
 ######################################################################
