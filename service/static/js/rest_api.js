@@ -266,3 +266,30 @@ $(function () {
     });
 
 })
+
+
+
+
+function loadCategories() {
+    $.ajax({
+        url: '/categories',  // Your Flask endpoint that returns category list
+        type: 'GET',
+        dataType: 'json',
+        success: function(categories) {
+            var categorySelect = $('#product_category');
+            categorySelect.empty(); // Clear existing options
+
+            $.each(categories, function(index, category) {
+                categorySelect.append($('<option></option>').attr('value', category).text(category));
+            });
+        },
+        error: function(error) {
+            console.log('Error loading categories:', error);
+        }
+    });
+}
+
+// Call this function when the document is ready
+$(document).ready(function() {
+    loadCategories();
+});
