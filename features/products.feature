@@ -44,6 +44,7 @@ Scenario: Create a Product
     And I should see "True" in the "Available" dropdown
     And I should see "sample.url" in the "image_url" field
 
+
 Scenario: Delete a Product
     When I visit the "Home Page"
     # get Available=Flase produect
@@ -71,3 +72,14 @@ Scenario: Delete a Product
     Then I should see the message "Product has been Deleted!"
     When I press the "Retrieve" button
     Then I should see the message "404 Not Found: Product with id"
+
+Scenario: List all Products
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "iPhone 15" in the results
+    And I should see "iPhone 16" in the results
+    And I should see "milk" in the results
+    And I should see "egg" in the results
+

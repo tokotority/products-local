@@ -79,7 +79,7 @@ tests/              - test cases package
 | PUT   | `/products/<product_id>` | Update   | Update fields of a existing product
 | DELETE   | `/products/<product_id>` | Delete   | Delete a Product based on the id specified in the path
 | GET   | `/products/<product_id>` | Read   | Read a Product based on the id specified in the path
-| POST   | `/products/<int:product_id>/change_availability` | Update   | change the availability of a Product based on the id
+| PUT   | `/products/<int:product_id>/change_availability` | Update   | change the availability of a Product based on the id
 
 ## License
 
