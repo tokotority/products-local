@@ -4,10 +4,11 @@ My Service
 Describe what your service does here
 """
 
+import sqlalchemy
 from flask import jsonify, request, abort, url_for
 from service.common import status  # HTTP Status Codes
 from service.models import Product, Category, db
-import sqlalchemy
+
 
 # Import Flask application
 from . import app
