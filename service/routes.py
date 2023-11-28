@@ -158,7 +158,7 @@ def update_product(product_id):
         abort(
             status.HTTP_404_NOT_FOUND, f"There is no exist product with id {product_id}"
         )
-    product.deserialize_update(request.get_json())
+    product.deserialize(request.get_json())
     product.update()
     message = product.serialize()
 
