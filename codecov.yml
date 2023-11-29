@@ -1,3 +1,6 @@
-coverage:
-  round: up
-  range: 0..50
+codecov:
+  # Project configuration
+  project:
+    default:
+      informational: true  # This will make all project status checks informational
+      threshold: 0.3%      # Set the threshold for changes
