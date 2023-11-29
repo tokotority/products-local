@@ -4,3 +4,9 @@ codecov:
     default:
       informational: true  # This will make all project status checks informational
       threshold: 0.3%      # Set the threshold for changes
+
+  # Patch configuration
+  patch:
+    default:
+      informational: true  # This will make all patch status checks informational
+      threshold: 0.2%      # Set the threshold for changes
