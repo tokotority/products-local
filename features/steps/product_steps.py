@@ -25,7 +25,7 @@ def step_impl(context):
             "name": row["name"],
             "description": row["description"],
             "price": row["price"],
-            "available": row["available"],
+            "available": row["available"] in ["True", "true", "1"],
             "image_url": row["image_url"],
             "category": row["category"],
         }
