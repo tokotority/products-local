@@ -340,7 +340,7 @@ class TestYourResourceServer(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.get_json())
-        self.assertEqual(response.get_json()["error"], "Error creating product")
+        self.assertEqual(response.get_json()["error"], "Bad Request")
 
     def test_update_missing_product(self):
         """It should not update a Product"""
