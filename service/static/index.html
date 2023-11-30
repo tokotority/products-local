@@ -53,6 +53,7 @@
               <label class="control-label col-sm-2" for="product_category">Category:</label>
               <div class="col-sm-10">
                 <select class="form-control" id="product_category">
+                  <option disabled selected value> -- Select a Category -- </option>
                   <!-- Dropdown options will be inserted here -->
                 </select>
               </div>
@@ -70,7 +71,7 @@
             <div class="form-group">
               <label class="control-label col-sm-2" for="product_price">Price:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="product_price" placeholder="Enter price for Product">
+                <input type="number" class="form-control" id="product_price" placeholder="Enter price for Product" min="0.01" step="0.01">
               </div>
             </div>
 
@@ -79,7 +80,8 @@
               <label class="control-label col-sm-2" for="product_available">Available:</label>
               <div class="col-sm-10">
                 <select class="form-control" id="product_available">
-                  <option value="true" selected>True</option>
+                  <option disabled selected value> -- Choose Availability -- </option>
+                  <option value="true">True</option>
                   <option value="false">False</option>
                 </select>
               </div>
@@ -101,6 +103,7 @@
                 <button type="submit" class="btn btn-primary" id="clear-btn">Clear</button>
                 <button type="submit" class="btn btn-success" id="create-btn">Create</button>
                 <button type="submit" class="btn btn-warning" id="update-btn">Update</button>
+                <button type="submit" class="btn btn-danger" id="availability-btn">Change Availability</button>
               </div>
             </div>
           </div> <!-- form horizontal -->
