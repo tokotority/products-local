@@ -272,8 +272,35 @@ $(function () {
 
     });
 
-})
 
+    // ****************************************
+    // Change Availability
+    // ****************************************
+
+    $("#availability-btn").click(function () {
+        // let product_id = $("#product_id").val();
+
+        // $("#flash_message").empty();
+
+        // let ajax = $.ajax({
+        //     type: "DELETE",
+        //     url: `/products/${product_id}`,
+        //     contentType: "application/json",
+        //     data: '',
+        // })
+
+        // ajax.done(function(res){
+        //     clear_form_data()
+        //     flash_message("Product has been Deleted!")
+        // });
+
+        // ajax.fail(function(res){
+        //     flash_message("Server error!")
+        // });
+    });
+
+
+})
 
 
 
