@@ -327,6 +327,21 @@ class TestYourResourceServer(TestCase):
         response = self.client.post(BASE_URL, json=test_product)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_product_invalid_input(self):
+        """It should not Create a Product with invalid input"""
+        test_product = {
+            "name": "Test Product",
+            "description": "Test Description",
+            "price": "invalid",  # This could be an example of an invalid price
+            "category": "ELECTRONICS",
+        }
+
+        response = self.client.post("/products", json=test_product)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.get_json())
+        self.assertEqual(response.get_json()["error"], "Error creating product")
+
     def test_update_missing_product(self):
         """It should not update a Product"""
 
