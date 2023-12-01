@@ -277,7 +277,7 @@ $(function () {
     // Change Availability
     // ****************************************
 
-    $("#availability-btn").click(function () {
+    $("#change_availability-btn").click(function () {
         let product_id = $("#product_id").val();
 
         $("#flash_message").empty();

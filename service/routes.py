@@ -234,7 +234,6 @@ def change_product_availability(product_id):
     return jsonify(message), status.HTTP_200_OK
 
 
-
 ######################################################################
 # get product categories
 ######################################################################

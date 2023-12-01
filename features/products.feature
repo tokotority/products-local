@@ -183,3 +183,25 @@ Scenario: Query a Product by Available
     And I press the "Search" button
     Then I should see the message "Success"
     And I should see "iPhone 16" in the results
+
+Scenario: Action Change the Availability of a Product
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    Then the "Id" field should be empty
+    And the "Name" field should be empty
+    And the "Category" field should be empty
+    And the "Description" field should be empty
+    And the "Price" field should be empty
+    And the "image_url" field should be empty
+    When I paste the "Id" field
+    And I press the "Change Availability" button
+    Then I should see the message "Product availability changed to False"
+    And I should see "iPhone 15" in the "name" field
+    And I should see "Best iphone for now" in the "description" field
+    And I should see "999" in the "price" field
+    And I should see "False" in the "available" dropdown
+    And I should see "sample.url" in the "image_url" field
+    And I should see "ELECTRONICS" in the "category" field

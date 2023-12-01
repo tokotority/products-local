@@ -116,7 +116,7 @@ def step_impl(context, element_name):
 
 @when('I press the "{button}" button')
 def step_impl(context, button):
-    button_id = button.lower() + "-btn"
+    button_id = button.lower().replace(" ", "_") + "-btn"
     context.driver.find_element(By.ID, button_id).click()
 
 
