@@ -226,12 +226,12 @@ def change_product_availability(product_id):
     new_availability = not product.available
     product.available = new_availability
     db.session.commit()
+    message = {"message": f"Product availability changed to {new_availability}"}
+    message = {**message, **product.serialize()}
 
     app.logger.info("Product availability changed for ID [%s].", product_id)
-    return (
-        jsonify({"message": f"Product availability changed to {new_availability}"}),
-        status.HTTP_200_OK,
-    )
+
+    return jsonify(message), status.HTTP_200_OK
 
 
 ######################################################################
