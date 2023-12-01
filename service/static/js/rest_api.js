@@ -278,25 +278,26 @@ $(function () {
     // ****************************************
 
     $("#availability-btn").click(function () {
-        // let product_id = $("#product_id").val();
+        let product_id = $("#product_id").val();
 
-        // $("#flash_message").empty();
+        $("#flash_message").empty();
 
-        // let ajax = $.ajax({
-        //     type: "DELETE",
-        //     url: `/products/${product_id}`,
-        //     contentType: "application/json",
-        //     data: '',
-        // })
+        let ajax = $.ajax({
+            type: "PUT",
+            url: `/products/${product_id}/change_availability`,
+            contentType: "application/json",
+            data: '',
+        })
 
-        // ajax.done(function(res){
-        //     clear_form_data()
-        //     flash_message("Product has been Deleted!")
-        // });
+        ajax.done(function(res){
+            update_form_data(res)
+            flash_message(res.message)
+        });
 
-        // ajax.fail(function(res){
-        //     flash_message("Server error!")
-        // });
+        ajax.fail(function(res){
+            clear_form_data()
+            flash_message(res.responseJSON.message)
+        });
     });
 
 
