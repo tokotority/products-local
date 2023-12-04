@@ -17,7 +17,7 @@ metadata:
     operation: Update
     time: '2023-12-03T21:55:43Z'
   name: cd-pipeline
-  namespace: devops-products
+  # namespace: devops-products
   resourceVersion: '1583706109'
   uid: 6ffec68d-1efc-4ae2-9811-9815aae271fb
 spec:

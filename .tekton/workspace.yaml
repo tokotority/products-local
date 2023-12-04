@@ -1,16 +1,15 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: devops-products
-  labels:
-    name: products
-
----
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: devops-products
+#   labels:
+#     name: products
+# ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: devops-products
+  # namespace: devops-products
   name: pipeline-pvc
 spec:
   accessModes:
