@@ -1,0 +1,25 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: cd-listener
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: github-release
+      interceptors:
+        - ref:
+            name: cel
+          params:
+          - name: filter
+            value: "body.action == 'published'"
+        - ref:
+            name: "github"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
+          params:
+          - name: "eventTypes"
+            value: ["release"]
+      bindings:
+        - ref: cd-binding
+      template:
+        ref: cd-template
