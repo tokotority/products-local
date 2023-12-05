@@ -1,0 +1,77 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  creationTimestamp: '2023-12-03T20:32:31Z'
+  generation: 2
+  managedFields:
+  - apiVersion: tekton.dev/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      'f:spec':
+        .: {}
+        'f:finally': {}
+        'f:params': {}
+        'f:tasks': {}
+        'f:workspaces': {}
+    manager: Mozilla
+    operation: Update
+    time: '2023-12-03T21:55:43Z'
+  name: cd-pipeline
+  # namespace: devops-products
+  resourceVersion: '1583706109'
+  uid: 6ffec68d-1efc-4ae2-9811-9815aae271fb
+spec:
+  params:
+  - description: The URL to the git repo
+    name: GIT_REPO
+    type: string
+  - default: master
+    description: The reference (branch or ref)
+    name: GIT_REF
+    type: string
+  tasks:
+  - name: git-clone
+    params:
+    - name: url
+      value: $(params.GIT_REPO)
+    - name: revision
+      value: $(params.GIT_REF)
+    - name: refspec
+      value: ''
+    - name: submodules
+      value: 'true'
+    - name: depth
+      value: '1'
+    - name: sslVerify
+      value: 'true'
+    - name: crtFileName
+      value: ca-bundle.crt
+    - name: subdirectory
+      value: ''
+    - name: sparseCheckoutDirectories
+      value: ''
+    - name: deleteExisting
+      value: 'true'
+    - name: httpProxy
+      value: ''
+    - name: httpsProxy
+      value: ''
+    - name: noProxy
+      value: ''
+    - name: verbose
+      value: 'true'
+    - name: gitInitImage
+      value: >-
+        registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:1a50511583fc02a27012d17d942e247813404104ddd282d7e26f99765174392c
+    - name: userHome
+      value: /home/git
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: pipeline-workspace
+  workspaces:
+  - name: pipeline-workspace
+    optional: false
+  finally: []
