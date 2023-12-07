@@ -1,0 +1,15 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: cd-pipeline
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: cd-listener
+spec:
+  to:
+    kind: Service
+    name: el-cd-listener
+  tls: {}
+  port:
+    targetPort: http-listener
