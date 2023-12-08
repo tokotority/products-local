@@ -6,7 +6,7 @@ Describe what your service does here
 
 from flask import jsonify, request, abort, url_for
 from service.common import status  # HTTP Status Codes
-from service.models import Product, Category, db
+from service.models import Product, Category
 
 # Import Flask application
 from . import app
@@ -236,10 +236,8 @@ def change_product_availability(product_id):
             f"Product with id '{product_id}' was not found.",
         )
 
-    new_availability = not product.available
-    product.available = new_availability
-    db.session.commit()
-    message = {"message": f"Product availability changed to {new_availability}"}
+    product.change_availability()
+    message = {"message": f"Product availability changed to {product.available}"}
     message = {**message, **product.serialize()}
 
     app.logger.info("Product availability changed for ID [%s].", product_id)
